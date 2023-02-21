@@ -56,7 +56,9 @@ char MainMenu()
         printf("(h)Hard   - 24x20, 99 mines\n");
         printf("(c)Custom - ??x??, ?? mines\n\n");
 
-        printf("Your choice : "); gets(&choice); printf("\n");
+        printf("Your choice : ");
+        scanf(" %c", &choice);
+        printf("\n");
 
         // Check if input for choice was within the alphabet, no matter the case
         if( choice == '\0' || (choice < 'A' || choice > 'Z') && (choice < 'a' || choice > 'z') )

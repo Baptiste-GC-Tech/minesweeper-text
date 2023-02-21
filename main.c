@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 char MainMenu();
 
@@ -9,37 +10,40 @@ int main()
 
     printf("--- MINEWSEEPER ---\n\n");
 
-    choice = MainMenu();
-    printf("Here is choice = %c\n", choice);
-
-    // Sets up internal values to generate the grid
-    /*switch (choice)
+    // Retrieval of choice, initialize the grid if correct input, call MainMenu again if not
+    do
     {
-        case 'e':
-            length = 10, width = 8, mines = 10;
-            printf("\n<*> EASY MODE SELECTED <*>\n\n");
-            break;
+        choice = MainMenu();
 
-        case 'm':
-            length = 18, width = 14, mines = 40;
-            printf("\n<*> MEDIUM MODE SELECTED <*>\n\n");
-            break;
+        switch (choice)
+        {
+            case 'e':
+                printf("\n<*>~ EASY MODE SELECTED ~<*>");
+                char grid[80];
+                unsigned int size = sizeof(grid)/sizeof(grid[0]);
+                FillGrid(10, 8, 10, *grid, size);
+                break;
 
-        case 'h':
-            length = 24, width = 20, mines = 99;
-            printf("\n<*> HARD MODE SELECTED <*>\n\n");
-            break;
+            case 'm':
+                printf("\n<*>~ MEDIUM MODE SELECTED ~<*>");
+                printf("\nYou can't play it just yet, we lack blessing from the memory Gods...\n\n");
+                break;
 
-        case 'c':
-            length = width = mines = -1;
-            do
-            {
-                if(length < 0)
-            }
+            case 'h':
+                printf("\n<*>~ HARD MODE SELECTED ~<*>");
+                printf("\nYou can't play it just yet, we lack blessing from the memory Gods...\n\n");
+                break;
 
-        default:
+            case 'c':
+                printf("\n<!>~ ###[WIP]### ~<!>");
+                printf("\nSELECT ANOTHER OPTION\n\n");
+                break;
 
-    }*/
+            default:
+                printf("\n<!>~ THIS OPTION DOESN'T EXIST ~<!>\n\n");
+                break;
+        }
+    } while( choice != 'e' && choice != 'm' && choice != 'h' && choice != 'c' );
 
     return 0;
 }
@@ -71,11 +75,7 @@ char MainMenu()
         {
             choice += 32;
         }
-
-        printf("\n    #$ choice = %c\n", choice);
     } while( choice < 'a' || choice > 'z' );
-
-    printf("\nOUT OF LOOP WITH %c\n", choice);
 
     return choice;
 }

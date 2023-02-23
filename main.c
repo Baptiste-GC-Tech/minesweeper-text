@@ -2,10 +2,13 @@
 #include <stdlib.h>
 
 char MainMenu();
+void FillGrid(int lenght, int height, int mines, int *grid, unsigned int size);
 
 int main()
 {
-    int length, width, mines, maxSpace = 1000;
+    srand(time(NULL));
+
+    int length, height, mines, maxSpace = 1000;
     char choice;
 
     printf("--- MINEWSEEPER ---\n\n");
@@ -19,9 +22,10 @@ int main()
         {
             case 'e':
                 printf("\n<*>~ EASY MODE SELECTED ~<*>");
-                char grid[80];
-                unsigned int size = sizeof(grid)/sizeof(grid[0]);
-                FillGrid(10, 8, 10, *grid, size);
+                int grid[80]; printf("#$  grid created\n");
+                unsigned int size = sizeof(grid)/sizeof(grid[0]); printf("#$  Size of grid : %d\n", size);
+                FillGrid(10, 8, 10, grid, size); printf("#$  FilGrid called\n");
+                printf("#$  Case closed\n");
                 break;
 
             case 'm':
@@ -46,6 +50,38 @@ int main()
     } while( choice != 'e' && choice != 'm' && choice != 'h' && choice != 'c' );
 
     return 0;
+}
+
+void FillGrid(int length, int height, int mines, int *grid, unsigned int size)
+{
+    int x, y, coord, minePlaced = mines;
+
+    // Fills the whole grid with the code 30 (which represents a Hidden No-Bomb cell)
+    for(int ord = 0; ord < height; ord++)
+    {
+        for(int abs = 0; abs < length; abs++)
+        {
+            coord = abs + ord * length;
+            grid[coord] = 30;
+        }
+    }
+
+    // Increment cells at random by 1, which creates 31 (which represents a Hidden With-Bomb cell), effectively placing the amount of mines desired
+    for(minePlaced; minePlaced > 0; minePlaced--)
+    {
+        coord = ( rand() % length ) + ( rand() % height ) * length;
+
+        if( grid[coord] != 31 )
+        {
+            grid[coord] += 1;
+        }
+        else
+        {
+            minePlaced++;
+        }
+
+        printf("#$  grid[%d] = %d\n", coord, grid[coord]);
+    }
 }
 
 char MainMenu()

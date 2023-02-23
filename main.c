@@ -4,44 +4,45 @@
 char MainMenu();
 void FillGrid(int lenght, int height, int mines, int *grid, unsigned int size);
 void display(int l,int h,int*tableau);
+void discover(int l, int h);
+
 
 int main()
 {
+    int grid[80];
     srand(time(NULL));
 
-    int length, height, mines, maxSpace = 1000;
+    int length=10, height=8, mines=10, maxSpace = 1000;
     char choice;
 
 
     printf("--- MINEWSEEPER ---\n\n");
 
     // Retrieval of choice, initialize the grid if correct input, call MainMenu again if not
-    do
+    /*do
     {
         choice = MainMenu();
 
         switch (choice)
         {
             case 'e':
-                printf("\n<*>~ EASY MODE SELECTED ~<*>");
-                int grid[80]; printf("#$  grid created\n");
-                unsigned int size = sizeof(grid)/sizeof(grid[0]); printf("#$  Size of grid : %d\n", size);
-                FillGrid(10, 8, 10, grid, size); printf("#$  FilGrid called\n");
-                printf("#$  Case closed\n");
+                printf("\n<*>~ EASY MODE SELECTED ~<*>\n");
+                unsigned int size = sizeof(grid)/sizeof(grid[0]);
+                FillGrid(length, height, mines, grid, size);
                 break;
 
             case 'm':
-                printf("\n<*>~ MEDIUM MODE SELECTED ~<*>");
+                printf("\n<*>~ MEDIUM MODE SELECTED ~<*>\n");
                 printf("\nYou can't play it just yet, we lack blessing from the memory Gods...\n\n");
                 break;
 
             case 'h':
-                printf("\n<*>~ HARD MODE SELECTED ~<*>");
+                printf("\n<*>~ HARD MODE SELECTED ~<*>\n");
                 printf("\nYou can't play it just yet, we lack blessing from the memory Gods...\n\n");
                 break;
 
             case 'c':
-                printf("\n<!>~ ###[WIP]### ~<!>");
+                printf("\n<!>~ ###[WIP]### ~<!>\n");
                 printf("\nSELECT ANOTHER OPTION\n\n");
                 break;
 
@@ -50,7 +51,8 @@ int main()
                 break;
         }
     } while( choice != 'e' && choice != 'm' && choice != 'h' && choice != 'c' );
-    display(length,height,grid);
+    display(length,height,grid);*/
+    discover(length,height);
 }
 
 void display(int l,int h,int*tableau){
@@ -94,9 +96,9 @@ void display(int l,int h,int*tableau){
                 printf("%c%c",186,flag);
             }else if (tableau[x]==20){
                 printf("%c%c",186,show);
-            }else if (tableau[x]==21){
+            }else if (tableau[x]==21||tableau[x]==31){
                 printf("%c%c",186,bomb);
-            }else if (tableau[x]==30||tableau[x]==31){
+            }else if (tableau[x]==30){
                 printf("%c%c",186,hidden);
             }
             x=x+1;
@@ -132,8 +134,6 @@ void FillGrid(int length, int height, int mines, int *grid, unsigned int size)
         {
             minePlaced++;
         }
-
-        printf("#$  grid[%d] = %d\n", coord, grid[coord]);
     }
 }
 
@@ -168,7 +168,23 @@ char MainMenu()
 
     return choice;
 }
-/*
+
+
+void discover(int l, int h){
+    char * abcisse[3];
+    printf("abcisse\n");
+    scanf(" %s", &abcisse);
+    if (strlen(abcisse)>4)
+    {
+        printf("error size\n");
+        printf("%d\n",strlen(abcisse));
+    }else{
+        printf("%s\n",abcisse);
+    }
+    discover(l,h);
+}
+
+/*15122
 bomb = 0 / 1
 flag/show/hidden = 1 / 2 / 3
 state bomb

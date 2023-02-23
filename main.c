@@ -4,12 +4,15 @@
 char MainMenu();
 void FillGrid(int lenght, int height, int mines, int *grid, unsigned int size);
 void display(int l,int h,int*tableau);
+int AllNeighborSafe(int length, int height, int *grid, int size, int targetAbs, int targetOrd);
 
 int main()
 {
     srand(time(NULL));
 
-    int length, height, mines, maxSpace = 1000;
+    int length = 10, height = 8, mines = 10, maxSpace = 1000;
+    int grid[80];
+    unsigned int size = sizeof(grid)/sizeof(grid[0]);
     char choice;
 
 
@@ -23,11 +26,8 @@ int main()
         switch (choice)
         {
             case 'e':
-                printf("\n<*>~ EASY MODE SELECTED ~<*>");
-                int grid[80]; printf("#$  grid created\n");
-                unsigned int size = sizeof(grid)/sizeof(grid[0]); printf("#$  Size of grid : %d\n", size);
-                FillGrid(10, 8, 10, grid, size); printf("#$  FilGrid called\n");
-                printf("#$  Case closed\n");
+                printf("\n<*>~ EASY MODE SELECTED ~<*>\n\n");
+                FillGrid(length, height, mines, grid, size);
                 break;
 
             case 'm':
@@ -50,8 +50,20 @@ int main()
                 break;
         }
     } while( choice != 'e' && choice != 'm' && choice != 'h' && choice != 'c' );
+
+    for(int i = 0; i < size; i++)
+    {
+
+    }
+
     display(length,height,grid);
+    printf("\n#$  (3,3) safe : %d", AllNeighborSafe(length, height, grid, size, 3, 3));
 }
+
+// ENTERING FUNCTION TERRITORY
+// ENTERING FUNCTION TERRITORY
+// ENTERING FUNCTION TERRITORY
+
 
 void display(int l,int h,int*tableau){
     int bomb=15, flag=127, hidden=219,show=177;
@@ -94,9 +106,9 @@ void display(int l,int h,int*tableau){
                 printf("%c%c",186,flag);
             }else if (tableau[x]==20){
                 printf("%c%c",186,show);
-            }else if (tableau[x]==21){
+            }else if (tableau[x]==21||tableau[x]==31){
                 printf("%c%c",186,bomb);
-            }else if (tableau[x]==30||tableau[x]==31){
+            }else if (tableau[x]==30){
                 printf("%c%c",186,hidden);
             }
             x=x+1;
@@ -132,8 +144,6 @@ void FillGrid(int length, int height, int mines, int *grid, unsigned int size)
         {
             minePlaced++;
         }
-
-        printf("#$  grid[%d] = %d\n", coord, grid[coord]);
     }
 }
 
@@ -167,6 +177,36 @@ char MainMenu()
     } while( choice < 'a' || choice > 'z' );
 
     return choice;
+}
+
+int AllNeighborSafe(int length, int heigth, int *grid, int size, int targetAbs, int targetOrd)
+{
+    int coord, neighborMine = 0;
+
+    // Go through the 3 neighbor coordinates of the targeted cell
+    for(int ord = -1; ord < 2; ord++)
+    {
+        for(int abs = -1; abs < 2; abs++)
+        {
+            printf("\n#$  abs = %d && ord = %d, so testing on [%d,%d]", abs, ord, (targetAbs + abs)+1, (targetOrd + ord)+1);
+
+            // Skip the test if it would be performed on the target, or if the cell tested is out of range
+            if( !(abs == 0 && ord == 0) && (targetAbs+abs > -1 && targetAbs+abs < length) && (targetOrd + ord > -1 && targetOrd + ord < heigth) )
+            {
+                printf("  <--- Tested");
+
+                coord = (targetAbs + abs) + (targetOrd + ord) * length;
+                if( grid[coord] >= 10 && grid[coord] % 2 == 1 )
+                {
+                    printf(" /!\\ Mine found");
+                    neighborMine++;
+                }
+            }
+        }
+    }
+
+    // Returns 1 (all are safe) by default, if no contradictions have been met earlier
+    return neighborMine;
 }
 /*
 bomb = 0 / 1

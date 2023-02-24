@@ -5,6 +5,8 @@ char MainMenu();
 void FillGrid(int lenght, int height, int mines, int *grid, unsigned int size);
 void display(int l,int h,int*tableau);
 int MineCounter(int length, int height, int *grid, int size, int targetAbs, int targetOrd);
+int TurnManager(int length, int height, int *grid, int size, int action, int targetAbs, int targetOrd);
+void Dig(int length, int height, int *grid, int size, int targetAbs, int targetOrd);
 
 int main()
 {
@@ -51,7 +53,8 @@ int main()
         }
     } while( choice != 'e' && choice != 'm' && choice != 'h' && choice != 'c' );
 
-    printf("\n#$  (4,4) safe : %d\n", MineCounter(length, height, grid, size, 3, 3));
+    TurnManager(length, height, grid, size, 'm', 0, 0);
+    printf("\n\n\n");
     display(length,height,grid);
 }
 
@@ -59,6 +62,87 @@ int main()
 // ENTERING FUNCTION TERRITORY
 // ENTERING FUNCTION TERRITORY
 
+int TurnManager(int length, int height, int *grid, int size, int action, int targetAbs, int targetOrd)
+{
+    // Places a flag on the selected cell
+    if( action == 'f' /*If player wants to place a flag*/ )
+    {
+        printf("#$  Entered Flag section of TurnManager");
+        if( grid[targetAbs + targetOrd * length] % 2 == 1 )
+        {
+            grid[targetAbs + targetOrd * length] == 11;
+        }
+        else
+        {
+            grid[targetAbs + targetOrd * length] == 10;
+        }
+    }
+    else
+    {
+        printf("#$  Entered Reveal section of TurnManager\n");
+        // Returns 1 is the player discovered a mined cell
+        if( grid[targetAbs + targetOrd * length] % 2 == 1 )
+        {
+            grid[targetAbs + targetOrd * length] = 21;
+            return 1;
+        }
+
+        // Discover the cell and it's "safe" neighborhood (meaning the neighbors don't have mined cell around them)
+        else
+        {
+            printf("#$ Called Dig() on %d %d\n", targetAbs+1, targetOrd+1);
+            Dig(length, height, grid, size, targetAbs, targetOrd);
+        }
+    }
+}
+
+void Dig(int length, int height, int *grid, int size, int targetAbs, int targetOrd)
+{
+    int coord = targetAbs + targetOrd * length;
+    int unsafeNeighborsCount;
+    int newAbs, newOrd;
+
+    // Checks if the current cell does not contain a mine
+    if( grid[coord] % 2 == 0 )
+    {
+        printf("#$  Entered not bombed section of Dig\n");
+        unsafeNeighborsCount = MineCounter(length, height, grid, size, targetAbs, targetOrd);
+        printf("\n#$  Target has %d mined neighbors\n", unsafeNeighborsCount);
+
+        // Reveals only the targeted cell if it has unsafe neighborhood
+        if( unsafeNeighborsCount != 0 )
+        {
+            printf("#$ Setting grid[target] to %d\n", unsafeNeighborsCount);
+            grid[coord] = unsafeNeighborsCount;
+        }
+
+        // Reveals the targeted cell and attempt do to the same to it's neighbors if it has safe neighborhood
+        else
+        {
+            printf("#$  Revealing target\n");
+            grid[coord] = 20;
+
+            printf("#$ Preparing for offset neighborhood scan of %d %d...\n", targetAbs+1, targetOrd+1);
+            for(int offsetAbs = -1; offsetAbs < 2; offsetAbs++)
+            {
+                for(int offsetOrd = -1; offsetOrd < 2; offsetOrd++)
+                {
+                    newAbs = targetAbs + offsetAbs;
+                    newOrd = targetOrd + offsetOrd;
+
+                    printf("\n#$  Testing %d %d", newAbs+1, newOrd+1);
+
+                    if( !(offsetAbs == 0 && offsetOrd == 0) && (newAbs > -1 && newAbs < length) && (newOrd > -1 && newOrd < height) )
+                    {
+                        printf("  <-- Dig called on this cell");
+                        // Dig(length, height, grid, size, newAbs, newOrd);
+                    }
+                }
+            }
+        }
+    }
+    printf("\n#$  Exiting Dig...\n");
+}
 
 void display(int l,int h,int*tableau){
     int bomb=15, flag=127, hidden=219,show=177;
@@ -176,7 +260,7 @@ char MainMenu()
     return choice;
 }
 
-int MineCounter(int length, int heigth, int *grid, int size, int targetAbs, int targetOrd)
+int MineCounter(int length, int height, int *grid, int size, int targetAbs, int targetOrd)
 {
     int coord, neighborMine = 0;
 
@@ -188,7 +272,7 @@ int MineCounter(int length, int heigth, int *grid, int size, int targetAbs, int 
             printf("\n#$  abs = %d && ord = %d, so testing on [%d,%d]", abs, ord, (targetAbs + abs)+1, (targetOrd + ord)+1);
 
             // Skip the test if it would be performed on the target, or if the cell tested is out of range
-            if( !(abs == 0 && ord == 0) && (targetAbs+abs > -1 && targetAbs+abs < length) && (targetOrd + ord > -1 && targetOrd + ord < heigth) )
+            if( !(abs == 0 && ord == 0) && (targetAbs+abs > -1 && targetAbs+abs < length) && (targetOrd + ord > -1 && targetOrd + ord < height) )
             {
                 printf("  <--- Tested");
 
@@ -203,13 +287,6 @@ int MineCounter(int length, int heigth, int *grid, int size, int targetAbs, int 
     }
 
     // Returns the number of neighbor mines
-    if( neighborMine > 0 )
-    {
-        printf("\n\n#$  About to put %d in grid[%d + %d * %d = %d]\n",neighborMine, targetAbs, targetOrd, length, targetAbs + targetOrd * length);
-        grid[targetAbs + targetOrd * length] = neighborMine;
-        printf("#$ New value of grid[%d] = %d\n\n", targetAbs + targetOrd * length, grid[targetAbs + targetOrd * length]);
-    }
-
     return neighborMine;
 }
 /*

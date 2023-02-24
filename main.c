@@ -4,7 +4,7 @@
 char MainMenu();
 void FillGrid(int lenght, int height, int mines, int *grid, unsigned int size);
 void display(int l,int h,int*tableau);
-int AllNeighborSafe(int length, int height, int *grid, int size, int targetAbs, int targetOrd);
+int MineCounter(int length, int height, int *grid, int size, int targetAbs, int targetOrd);
 
 int main()
 {
@@ -51,13 +51,8 @@ int main()
         }
     } while( choice != 'e' && choice != 'm' && choice != 'h' && choice != 'c' );
 
-    for(int i = 0; i < size; i++)
-    {
-
-    }
-
+    printf("\n#$  (4,4) safe : %d\n", MineCounter(length, height, grid, size, 3, 3));
     display(length,height,grid);
-    printf("\n#$  (3,3) safe : %d", AllNeighborSafe(length, height, grid, size, 3, 3));
 }
 
 // ENTERING FUNCTION TERRITORY
@@ -110,6 +105,8 @@ void display(int l,int h,int*tableau){
                 printf("%c%c",186,bomb);
             }else if (tableau[x]==30){
                 printf("%c%c",186,hidden);
+            }else{
+                printf("%c%d", 186, tableau[x]);
             }
             x=x+1;
         }
@@ -179,7 +176,7 @@ char MainMenu()
     return choice;
 }
 
-int AllNeighborSafe(int length, int heigth, int *grid, int size, int targetAbs, int targetOrd)
+int MineCounter(int length, int heigth, int *grid, int size, int targetAbs, int targetOrd)
 {
     int coord, neighborMine = 0;
 
@@ -205,7 +202,14 @@ int AllNeighborSafe(int length, int heigth, int *grid, int size, int targetAbs, 
         }
     }
 
-    // Returns 1 (all are safe) by default, if no contradictions have been met earlier
+    // Returns the number of neighbor mines
+    if( neighborMine > 0 )
+    {
+        printf("\n\n#$  About to put %d in grid[%d + %d * %d = %d]\n",neighborMine, targetAbs, targetOrd, length, targetAbs + targetOrd * length);
+        grid[targetAbs + targetOrd * length] = neighborMine;
+        printf("#$ New value of grid[%d] = %d\n\n", targetAbs + targetOrd * length, grid[targetAbs + targetOrd * length]);
+    }
+
     return neighborMine;
 }
 /*

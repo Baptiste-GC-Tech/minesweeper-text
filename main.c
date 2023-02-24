@@ -171,16 +171,44 @@ char MainMenu()
 
 
 void discover(int l, int h){
-    char * abcisse[3];
+    int abcisse;
     printf("abcisse\n");
-    scanf(" %s", &abcisse);
-    if (strlen(abcisse)>4)
+    int error=scanf("%d", &abcisse);
+    while (abcisse>10000){//||abcisse<0){
+        if (error==1){
+            printf("error size\n%d\nabcisse\n",abcisse);
+            error=scanf("%d", abcisse);
+        }else{
+            for(int i=0,i<10,i++){
+                if (abcisse[i]>10){
+
+
+                }
+            }
+            printf("error no letter accept\n%d\nabcisse\n",abcisse);
+            abcisse=10000;
+            error=scanf("%d", abcisse);
+
+        }
+    }
+    printf("ok\n%d\n",abcisse);
+
+    /*if (strlen(abcisse)>4)
     {
         printf("error size\n");
         printf("%d\n",strlen(abcisse));
+        //printf("%c",error);
+
+    }else if(abcisse>9||abcisse<0){
+        printf("error no letter accept\n");
+        printf("%c\n",abcisse);
+        //printf("%c",error);
+        //int abcisse[5];
     }else{
-        printf("%s\n",abcisse);
-    }
+        printf("%c\n",abcisse);
+        printf("%d\n",abcisse);
+        //printf("%d\n",error);
+    }*/
     discover(l,h);
 }
 

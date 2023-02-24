@@ -103,7 +103,7 @@ void Dig(int length, int height, int *grid, int size, int targetAbs, int targetO
     int newAbs, newOrd;
 
     // Checks if the current cell does not contain a mine
-    if( grid[coord] % 2 == 0 )
+    if( grid[coord] % 2 == 0 && grid[coord] / 10 != 2 )
     {
         printf("#$  Entered not bombed section of Dig\n");
         unsafeNeighborsCount = MineCounter(length, height, grid, size, targetAbs, targetOrd);
@@ -135,7 +135,7 @@ void Dig(int length, int height, int *grid, int size, int targetAbs, int targetO
                     if( !(offsetAbs == 0 && offsetOrd == 0) && (newAbs > -1 && newAbs < length) && (newOrd > -1 && newOrd < height) )
                     {
                         printf("  <-- Dig called on this cell");
-                        // Dig(length, height, grid, size, newAbs, newOrd);
+                        Dig(length, height, grid, size, newAbs, newOrd);
                     }
                 }
             }
@@ -145,7 +145,7 @@ void Dig(int length, int height, int *grid, int size, int targetAbs, int targetO
 }
 
 void display(int l,int h,int*tableau){
-    int bomb=15, flag=127, hidden=219,show=177;
+    int bomb=15, flag=127, hidden=219,show=32/*177*/;
     printf("  ");
     for (int i=0;i<l;i++)
     {

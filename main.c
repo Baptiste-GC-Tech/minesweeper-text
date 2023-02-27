@@ -2,21 +2,19 @@
 #include <stdlib.h>
 
 char MainMenu();
-void FillGrid(int lenght, int height, int mines, int *grid, unsigned int size);
+void FillGrid(int lenght, int height, int mines, int *grid);
 void display(int l,int h,int*tableau);
-int MineCounter(int length, int height, int *grid, int size, int targetAbs, int targetOrd);
-int TurnManager(int length, int height, int *grid, int size, int action, int targetAbs, int targetOrd);
-void Dig(int length, int height, int *grid, int size, int targetAbs, int targetOrd);
+int MineCounter(int length, int height, int *grid, int targetAbs, int targetOrd);
+int TurnManager(int length, int height, int *grid, int action, int targetAbs, int targetOrd);
+void Dig(int length, int height, int *grid, int targetAbs, int targetOrd);
+int askInput(int limit);
 
 int main()
 {
-    srand(time(NULL));
-
-    int length = 10, height = 8, mines = 10, maxSpace = 1000;
     int grid[80];
-    unsigned int size = sizeof(grid)/sizeof(grid[0]);
+    int length = 10, height = 8, mines = 10, maxSpace = 1000;
     char choice;
-
+    srand(time(NULL));
 
     printf("--- MINEWSEEPER ---\n\n");
 
@@ -29,21 +27,21 @@ int main()
         {
             case 'e':
                 printf("\n<*>~ EASY MODE SELECTED ~<*>\n\n");
-                FillGrid(length, height, mines, grid, size);
+                FillGrid(length, height, mines, grid);
                 break;
 
             case 'm':
-                printf("\n<*>~ MEDIUM MODE SELECTED ~<*>");
+                printf("\n<*>~ MEDIUM MODE SELECTED ~<*>\n");
                 printf("\nYou can't play it just yet, we lack blessing from the memory Gods...\n\n");
                 break;
 
             case 'h':
-                printf("\n<*>~ HARD MODE SELECTED ~<*>");
+                printf("\n<*>~ HARD MODE SELECTED ~<*>\n");
                 printf("\nYou can't play it just yet, we lack blessing from the memory Gods...\n\n");
                 break;
 
             case 'c':
-                printf("\n<!>~ ###[WIP]### ~<!>");
+                printf("\n<!>~ ###[WIP]### ~<!>\n");
                 printf("\nSELECT ANOTHER OPTION\n\n");
                 break;
 
@@ -53,16 +51,35 @@ int main()
         }
     } while( choice != 'e' && choice != 'm' && choice != 'h' && choice != 'c' );
 
-    TurnManager(length, height, grid, size, 'm', 0, 0);
+    printf("\n\n SIMULATING A TURN : dig on (0, 0)\n");
+    TurnManager(length, height, grid, 'm', 0, 0);
     printf("\n\n\n");
     display(length,height,grid);
+
+    printf("\n\n ASKING FOR INPUT : not in a loop, no other function call.\n Just a test to see if input filters works\n");
+    int abs, ord;
+    do
+    {
+        printf("Enter abs : ");
+        abs = askInput(length);
+
+        printf("\n\n#$  abs = %d\n", abs);
+    } while( abs < 0 );
+
+    do
+    {
+        printf("Enter ord : ");
+        ord = askInput(height);
+    } while( ord < 0 );
+
+    printf("(%d, %d) selected !\n\n",abs, ord);
 }
 
 // ENTERING FUNCTION TERRITORY
 // ENTERING FUNCTION TERRITORY
 // ENTERING FUNCTION TERRITORY
 
-int TurnManager(int length, int height, int *grid, int size, int action, int targetAbs, int targetOrd)
+int TurnManager(int length, int height, int *grid, int action, int targetAbs, int targetOrd)
 {
     // Places a flag on the selected cell
     if( action == 'f' /*If player wants to place a flag*/ )
@@ -91,12 +108,12 @@ int TurnManager(int length, int height, int *grid, int size, int action, int tar
         else
         {
             printf("#$ Called Dig() on %d %d\n", targetAbs+1, targetOrd+1);
-            Dig(length, height, grid, size, targetAbs, targetOrd);
+            Dig(length, height, grid, targetAbs, targetOrd);
         }
     }
 }
 
-void Dig(int length, int height, int *grid, int size, int targetAbs, int targetOrd)
+void Dig(int length, int height, int *grid, int targetAbs, int targetOrd)
 {
     int coord = targetAbs + targetOrd * length;
     int unsafeNeighborsCount;
@@ -106,7 +123,7 @@ void Dig(int length, int height, int *grid, int size, int targetAbs, int targetO
     if( grid[coord] % 2 == 0 && grid[coord] / 10 != 2 )
     {
         printf("#$  Entered not bombed section of Dig\n");
-        unsafeNeighborsCount = MineCounter(length, height, grid, size, targetAbs, targetOrd);
+        unsafeNeighborsCount = MineCounter(length, height, grid, targetAbs, targetOrd);
         printf("\n#$  Target has %d mined neighbors\n", unsafeNeighborsCount);
 
         // Reveals only the targeted cell if it has unsafe neighborhood
@@ -135,7 +152,7 @@ void Dig(int length, int height, int *grid, int size, int targetAbs, int targetO
                     if( !(offsetAbs == 0 && offsetOrd == 0) && (newAbs > -1 && newAbs < length) && (newOrd > -1 && newOrd < height) )
                     {
                         printf("  <-- Dig called on this cell");
-                        Dig(length, height, grid, size, newAbs, newOrd);
+                        Dig(length, height, grid, newAbs, newOrd);
                     }
                 }
             }
@@ -198,7 +215,7 @@ void display(int l,int h,int*tableau){
 }
 
 
-void FillGrid(int length, int height, int mines, int *grid, unsigned int size)
+void FillGrid(int length, int height, int mines, int *grid)
 {
     int x, y, coord, minePlaced = mines;
 
@@ -260,7 +277,7 @@ char MainMenu()
     return choice;
 }
 
-int MineCounter(int length, int height, int *grid, int size, int targetAbs, int targetOrd)
+int MineCounter(int length, int height, int *grid, int targetAbs, int targetOrd)
 {
     int coord, neighborMine = 0;
 
@@ -289,7 +306,47 @@ int MineCounter(int length, int height, int *grid, int size, int targetAbs, int 
     // Returns the number of neighbor mines
     return neighborMine;
 }
-/*
+
+int askInput(int limit)
+{
+    char query[50];
+
+    scanf(" %[^\n]s", &query);
+    printf("#$  query : %s, %d character(s)\n", query, strlen(query));
+
+
+    // If the input could be in the 4 digit range, discard as invalid immediately (code : -1)
+    if( strlen(query) > 3 )
+    {
+        printf("<!>~ INPUT TOO LONG ~<!>\n");
+        return -1;
+    }
+
+    // If any characters of the query is not a number, discard as invalid as soon as something else is found (code : -2)
+    for(int x = 0; x < strlen(query); x++)
+    {
+        printf("\n#$  query[%d] = %c", x, query[x]);
+        if( query[x] < '0' || query[x] > '9' )
+        {
+            printf("   <--   <!>~ INVALID INPUT ~<!>\n");
+            return -2;
+        }
+    }
+    printf("\n#$  for loop exited\n");
+    printf("#$ Got input %d, with limit %d\n", atoi(query), limit);
+
+    // If the input result doesn't fit into the grid, or is 0, discard as invalid (code : -3)
+    if( atoi(query) < 1 || atoi(query) > limit )
+    {
+        printf("<!>~ INPUT OUT RANGE ~<!>\n");
+        return -3;
+    }
+
+    return atoi(query);
+}
+
+/*15122
+>>>>>>> input
 bomb = 0 / 1
 flag/show/hidden = 1 / 2 / 3
 state bomb

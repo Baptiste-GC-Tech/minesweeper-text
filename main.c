@@ -4,7 +4,7 @@
 char MainMenu();
 void FillGrid(int lenght, int height, int mines, int *grid, unsigned int size);
 void display(int l,int h,int*tableau);
-void discover(int l, int h);
+int askInput(int limit);
 
 
 int main()
@@ -52,7 +52,23 @@ int main()
         }
     } while( choice != 'e' && choice != 'm' && choice != 'h' && choice != 'c' );
     display(length,height,grid);*/
-    discover(length,height);
+    int abs, ord;
+    do
+    {
+        printf("Enter abs : ");
+        abs = askInput(length);
+
+        printf("\n\n#$  abs = %d\n", abs);
+    } while( abs < 0 );
+
+    do
+    {
+        printf("Enter ord : ");
+        ord = askInput(height);
+    } while( ord < 0 );
+
+    printf("(%d, %d) selected !\n\n",abs, ord);
+
 }
 
 void display(int l,int h,int*tableau){
@@ -170,46 +186,42 @@ char MainMenu()
 }
 
 
-void discover(int l, int h){
-    int abcisse;
-    printf("abcisse\n");
-    int error=scanf("%d", &abcisse);
-    while (abcisse>10000){//||abcisse<0){
-        if (error==1){
-            printf("error size\n%d\nabcisse\n",abcisse);
-            error=scanf("%d", abcisse);
-        }else{
-            for(int i=0,i<10,i++){
-                if (abcisse[i]>10){
+int askInput(int limit)
+{
+    char query[50];
+
+    scanf(" %[^\n]s", &query);
+    printf("#$  query : %s, %d character(s)\n", query, strlen(query));
 
 
-                }
-            }
-            printf("error no letter accept\n%d\nabcisse\n",abcisse);
-            abcisse=10000;
-            error=scanf("%d", abcisse);
+    // If the input could be in the 4 digit range, discard as invalid immediately (code : -1)
+    if( strlen(query) > 3 )
+    {
+        printf("<!>~ INPUT TOO LONG ~<!>\n");
+        return -1;
+    }
 
+    // If any characters of the query is not a number, discard as invalid as soon as something else is found (code : -2)
+    for(int x = 0; x < strlen(query); x++)
+    {
+        printf("\n#$  query[%d] = %c", x, query[x]);
+        if( query[x] < '0' || query[x] > '9' )
+        {
+            printf("   <--   <!>~ INVALID INPUT ~<!>\n");
+            return -2;
         }
     }
-    printf("ok\n%d\n",abcisse);
+    printf("\n#$  for loop exited\n");
+    printf("#$ Got input %d, with limit %d\n", atoi(query), limit);
 
-    /*if (strlen(abcisse)>4)
+    // If the input result doesn't fit into the grid, or is 0, discard as invalid (code : -3)
+    if( atoi(query) < 1 || atoi(query) > limit )
     {
-        printf("error size\n");
-        printf("%d\n",strlen(abcisse));
-        //printf("%c",error);
+        printf("<!>~ INPUT OUT RANGE ~<!>\n");
+        return -3;
+    }
 
-    }else if(abcisse>9||abcisse<0){
-        printf("error no letter accept\n");
-        printf("%c\n",abcisse);
-        //printf("%c",error);
-        //int abcisse[5];
-    }else{
-        printf("%c\n",abcisse);
-        printf("%d\n",abcisse);
-        //printf("%d\n",error);
-    }*/
-    discover(l,h);
+    return atoi(query);
 }
 
 /*15122

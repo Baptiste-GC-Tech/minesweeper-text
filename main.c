@@ -4,16 +4,24 @@
 char MainMenu();
 void FillGrid(int lenght, int height, int mines, int *grid, unsigned int size);
 void display(int l,int h,int*tableau);
+int askInput(int limit);
+
 
 int main()
 {
+
     srand(time(NULL));
 
-    int length, height, mines, maxSpace = 1000;
+    int*grid;
+    int length, height, mines, maxSpace;
     char choice;
+    unsigned int size;
+
+
 
 
     printf("--- MINEWSEEPER ---\n\n");
+
 
     // Retrieval of choice, initialize the grid if correct input, call MainMenu again if not
     do
@@ -23,25 +31,37 @@ int main()
         switch (choice)
         {
             case 'e':
-                printf("\n<*>~ EASY MODE SELECTED ~<*>");
-                int grid[80]; printf("#$  grid created\n");
-                unsigned int size = sizeof(grid)/sizeof(grid[0]); printf("#$  Size of grid : %d\n", size);
-                FillGrid(10, 8, 10, grid, size); printf("#$  FilGrid called\n");
-                printf("#$  Case closed\n");
+                //int grid[80];
+                length=10, height=8, mines=10, maxSpace = 1000;
+                grid = (int*) malloc(sizeof(int) * length*height);
+                printf("\n<*>~ EASY MODE SELECTED ~<*>\n");
+                size = sizeof(grid)/sizeof(grid[0]);
+                printf("%d=%d/%d\n%d\n",size,sizeof(grid),sizeof(grid[0]),grid);
+                FillGrid(length, height, mines, grid, size);
                 break;
 
             case 'm':
-                printf("\n<*>~ MEDIUM MODE SELECTED ~<*>");
-                printf("\nYou can't play it just yet, we lack blessing from the memory Gods...\n\n");
+                //int grid[80];
+                length=18, height=14, mines=40, maxSpace = 1000;
+                grid = (int*) malloc(sizeof(int) * length*height);
+                printf("\n<*>~ MEDIUM MODE SELECTED ~<*>\n");
+                size = sizeof(grid)/sizeof(grid[0]);
+                printf("%d=%d/%d\n\n",size,sizeof(grid),sizeof(grid[0]));
+                FillGrid(length, height, mines, grid, size);
                 break;
 
             case 'h':
-                printf("\n<*>~ HARD MODE SELECTED ~<*>");
+                length=24, height=20, mines=99, maxSpace = 1000;
+                grid = (int*) malloc(sizeof(int) * length*height);
+                printf("\n<*>~ HARD MODE SELECTED ~<*>\n");
+                size = sizeof(grid)/sizeof(grid[0]);
+                printf("%d=%d/%d\n\n",size,sizeof(grid),sizeof(grid[0]));
                 printf("\nYou can't play it just yet, we lack blessing from the memory Gods...\n\n");
+                FillGrid(length, height, mines, grid, size);
                 break;
 
             case 'c':
-                printf("\n<!>~ ###[WIP]### ~<!>");
+                printf("\n<!>~ ###[WIP]### ~<!>\n");
                 printf("\nSELECT ANOTHER OPTION\n\n");
                 break;
 
@@ -51,6 +71,23 @@ int main()
         }
     } while( choice != 'e' && choice != 'm' && choice != 'h' && choice != 'c' );
     display(length,height,grid);
+    int abs, ord;
+    do
+    {
+        printf("Enter abs : ");
+        abs = askInput(length);
+
+        printf("\n\n#$  abs = %d\n", abs);
+    } while( abs < 0 );
+
+    do
+    {
+        printf("Enter ord : ");
+        ord = askInput(height);
+    } while( ord < 0 );
+
+    printf("(%d, %d) selected !\n\n",abs, ord);
+
 }
 
 void display(int l,int h,int*tableau){
@@ -65,6 +102,7 @@ void display(int l,int h,int*tableau){
             printf("%c%d",186,(i+1)/10);
         }
     }
+    printf("%c",186);
 
     printf("\n  ");
 
@@ -72,6 +110,7 @@ void display(int l,int h,int*tableau){
     {
         printf("%c%d",186,(i-((i+1)/10)*10)+1);
     }
+    printf("%c",186);
 
     int x=0;
     for (int i=0;i<h;i++)
@@ -82,6 +121,7 @@ void display(int l,int h,int*tableau){
 
             printf("%c%c",206,205);
         }
+        printf("%c",185);
 
         if (i<9){
             printf("\n %d",i+1);
@@ -94,14 +134,22 @@ void display(int l,int h,int*tableau){
                 printf("%c%c",186,flag);
             }else if (tableau[x]==20){
                 printf("%c%c",186,show);
-            }else if (tableau[x]==21){
+            }else if (tableau[x]==21||tableau[x]==31){
                 printf("%c%c",186,bomb);
-            }else if (tableau[x]==30||tableau[x]==31){
+            }else if (tableau[x]==30){
                 printf("%c%c",186,hidden);
             }
             x=x+1;
         }
+        printf("%c",186);
     }
+    printf("\n%c",205);
+    for (int j=0;j<l;j++)
+        {
+
+            printf("%c%c",205,202);
+        }
+        printf("%c%c",205,188);
 }
 
 
@@ -132,8 +180,6 @@ void FillGrid(int length, int height, int mines, int *grid, unsigned int size)
         {
             minePlaced++;
         }
-
-        printf("#$  grid[%d] = %d\n", coord, grid[coord]);
     }
 }
 
@@ -168,7 +214,47 @@ char MainMenu()
 
     return choice;
 }
-/*
+
+
+int askInput(int limit)
+{
+    char query[50];
+
+    scanf(" %[^\n]s", &query);
+    printf("#$  query : %s, %d character(s)\n", query, strlen(query));
+
+
+    // If the input could be in the 4 digit range, discard as invalid immediately (code : -1)
+    if( strlen(query) > 3 )
+    {
+        printf("<!>~ INPUT TOO LONG ~<!>\n");
+        return -1;
+    }
+
+    // If any characters of the query is not a number, discard as invalid as soon as something else is found (code : -2)
+    for(int x = 0; x < strlen(query); x++)
+    {
+        printf("\n#$  query[%d] = %c", x, query[x]);
+        if( query[x] < '0' || query[x] > '9' )
+        {
+            printf("   <--   <!>~ INVALID INPUT ~<!>\n");
+            return -2;
+        }
+    }
+    printf("\n#$  for loop exited\n");
+    printf("#$ Got input %d, with limit %d\n", atoi(query), limit);
+
+    // If the input result doesn't fit into the grid, or is 0, discard as invalid (code : -3)
+    if( atoi(query) < 1 || atoi(query) > limit )
+    {
+        printf("<!>~ INPUT OUT RANGE ~<!>\n");
+        return -3;
+    }
+
+    return atoi(query);
+}
+
+/*15122
 bomb = 0 / 1
 flag/show/hidden = 1 / 2 / 3
 state bomb

@@ -19,8 +19,8 @@ int AskCoord(int limit);
 int main()
 {
     // Grid and grid data
-    int grid[80];
-    int length = 10, height = 8, mines = 10, maxSpace = 1000;
+    int*grid;
+    int length, height, mines, maxSpace;
 
     // Player input
     char menuChoice;
@@ -43,18 +43,26 @@ int main()
         switch (menuChoice)
         {
             case 'e':
-                printf("\n<*>~ EASY MODE SELECTED ~<*>\n\n");
+                //int grid[80];
+                length=10, height=8, mines=10, maxSpace = 1000;
+                grid = (int*) malloc(sizeof(int) * length*height);
+                printf("\n<*>~ EASY MODE SELECTED ~<*>\n");
                 FillGrid(length, height, mines, grid);
                 break;
 
             case 'm':
+                //int grid[80];
+                length=18, height=14, mines=40, maxSpace = 1000;
+                grid = (int*) malloc(sizeof(int) * length*height);
                 printf("\n<*>~ MEDIUM MODE SELECTED ~<*>\n");
-                printf("\nYou can't play it just yet, we lack blessing from the memory Gods...\n\n");
+                FillGrid(length, height, mines, grid);
                 break;
 
             case 'h':
+                length=24, height=20, mines=99, maxSpace = 1000;
+                grid = (int*) malloc(sizeof(int) * length*height);
                 printf("\n<*>~ HARD MODE SELECTED ~<*>\n");
-                printf("\nYou can't play it just yet, we lack blessing from the memory Gods...\n\n");
+                FillGrid(length, height, mines, grid);
                 break;
 
             case 'c':
@@ -192,6 +200,7 @@ void Display(int l,int h,int*tableau)
             printf("%c%d",186,(i+1)/10);
         }
     }
+    printf("%c",186);
 
     printf("\n  ");
 
@@ -199,6 +208,7 @@ void Display(int l,int h,int*tableau)
     {
         printf("%c%d",186,(i-((i+1)/10)*10)+1);
     }
+    printf("%c",186);
 
     int x=0;
     for (int i=0;i<h;i++)
@@ -209,6 +219,7 @@ void Display(int l,int h,int*tableau)
 
             printf("%c%c",206,205);
         }
+        printf("%c",185);
 
         if (i<9){
             printf("\n %d",i+1);
@@ -221,7 +232,7 @@ void Display(int l,int h,int*tableau)
                 printf("%c%c",186,flag);
             }else if (tableau[x]==20){
                 printf("%c%c",186,show);
-            }else if (tableau[x]==21){
+            }else if (tableau[x]==21||tableau[x]==31){
                 printf("%c%c",186,bomb);
             }else if (tableau[x]==30){
                 printf("%c%c",186,hidden);
@@ -232,7 +243,15 @@ void Display(int l,int h,int*tableau)
             }
             x=x+1;
         }
+        printf("%c",186);
     }
+    printf("\n%c",205);
+    for (int j=0;j<l;j++)
+        {
+
+            printf("%c%c",205,202);
+        }
+        printf("%c%c",205,188);
 }
 
 int MineCounter(int length, int height, int *grid, int targetAbs, int targetOrd)
@@ -426,3 +445,11 @@ int AskAction()
             return -3;
     }
 }
+
+
+/*15122
+bomb = 0 / 1
+flag/show/hidden = 1 / 2 / 3
+state bomb
+10 / 20 / 30 / 11 / 21 / 31
+*/

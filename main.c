@@ -226,7 +226,7 @@ void Display(int l,int h,int*tableau)
             }else if (tableau[x]==30){
                 printf("%c%c",186,hidden);
             }else if (tableau[x]==31){
-                printf("%c%c",186,177);
+                printf("%c\033[38;2;0;255;255m%c\033[0m",186,177);
             }else{
                 printf("%c%d", 186, tableau[x]);
             }

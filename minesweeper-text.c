@@ -19,7 +19,7 @@ int AskCoord(int limit);
 int main()
 {
     // Grid and grid data
-    int * grid = NULL;
+    int* grid = NULL;
     int length, height, mines, maxSpace;
 
     // Player input

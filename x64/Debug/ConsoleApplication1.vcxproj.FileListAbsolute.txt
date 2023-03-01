@@ -1,2 +1,0 @@
-C:\Users\ZBOOK\Documents\minesweeper\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
-C:\Users\ZBOOK\Documents\minesweeper-text\x64\Debug\ConsoleApplication1.exe

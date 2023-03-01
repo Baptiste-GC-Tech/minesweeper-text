@@ -19,6 +19,7 @@ int AskAction();
 
 int main()
 {
+    system("color f0");
     // Grid and grid data
     int* grid = NULL;
     int length = NULL, height = NULL, mines, maxSpace;
@@ -197,6 +198,7 @@ void FillGrid(int length, int height, int mines, int* grid)
 
 void Display(int l, int h, int* tableau)
 {
+
     /*15122
     bomb = 0 / 1
     flag/show/hidden = 1 / 2 / 3
@@ -253,11 +255,35 @@ void Display(int l, int h, int* tableau)
             else if (tableau[x] == 21) {
                 printf("%c%c", 186, bomb);
             }
-            else if (tableau[x] == 30 || tableau[x] == 31) {
+            else if (tableau[x] == 30/* || tableau[x] == 31*/) {
+                printf("%c\033[38;2;0;0;255m%c\033[0m", 186, hidden);
+            }
+            else if (/*tableau[x] == 30 || */tableau[x] == 31) {
                 printf("%c%c", 186, hidden);
             }
-            else if (tableau[x] == 31) {
-                printf("%c\033[38;2;0;255;255m%c\033[0m", 186, 177);
+            else if (tableau[x] == 1){
+                printf("%c\033[38;2;0;0;255m%d", 186, tableau[x]);
+            }
+            else if (tableau[x] == 2) {
+                printf("%c[38;2;0;255;0m%d", 186, tableau[x]);
+            }
+            else if (tableau[x] == 3) {
+                printf("%c[38;2;255;0;0m%d", 186, tableau[x]);
+            }
+            else if (tableau[x] == 4) {
+                printf("%c[38;2;255;0;255m%d", 186, tableau[x]);
+            }
+            else if (tableau[x] == 5) {
+                printf("%c[38;2;150;86;17%d", 186, tableau[x]);
+            }
+            else if (tableau[x] == 6) {
+                printf("%c[38;2;0;0;255m%d", 186, tableau[x]);
+            }
+            else if (tableau[x] == 7) {
+                printf("%c[38;2;0;255;255m%d", 186, tableau[x]);
+            }
+            else if (tableau[x] == 8) {
+                printf("%c[38;2;0;0;255m%d", 186, tableau[x]);
             }
             else {
                 printf("%c%d", 186, tableau[x]);

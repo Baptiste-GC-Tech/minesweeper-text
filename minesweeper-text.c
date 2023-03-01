@@ -15,12 +15,13 @@ int MineCounter(int length, int height, int* grid, int targetAbs, int targetOrd)
 int TurnManager(int length, int height, int* grid, int action, int targetAbs, int targetOrd);
 void Dig(int length, int height, int* grid, int targetAbs, int targetOrd);
 int AskCoord(int limit);
+int AskAction();
 
 int main()
 {
     // Grid and grid data
     int* grid = NULL;
-    int length, height, mines, maxSpace;
+    int length = NULL, height = NULL, mines, maxSpace;
 
     // Player input
     char menuChoice;
@@ -145,7 +146,7 @@ char MainMenu()
         printf("(c)Custom - ??x??, ?? mines\n\n");
 
         printf("Your choice : ");
-        scanf_s(" %c", &choice);
+        scanf_s(" %c", &choice, 1);
         printf("\n");
 
         // Check if input for choice was within the alphabet, no matter the case
@@ -392,7 +393,7 @@ int AskCoord(int limit)
 {
     char query[50];
 
-    scanf_s(" %[^\n]s", &query);
+    scanf_s(" %[^\n]s", &query,50);
 
 
     // If the input could be in the 4 digit range, discard as invalid immediately (code : -1)
@@ -426,7 +427,7 @@ int AskAction()
 {
     char query[50];
 
-    scanf_s(" %[^\n]s", &query);
+    scanf_s(" %[^\n]s", &query,50);
 
     // If the input more than 1 character, discard as invalid immediately (code : -1)
     if (strlen(query) > 1)

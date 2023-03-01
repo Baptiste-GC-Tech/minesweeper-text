@@ -1,19 +1,8 @@
 ﻿  minesweeper-text.c
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(34,11): warning C4013: 'time' non défini(e) ; extern retournant int pris par défaut
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(110,30): warning C4013: 'AskAction' non défini(e) ; extern retournant int pris par défaut
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(148,17): warning C4473: 'scanf_s' : nombre insuffisant d'arguments passés pour la chaîne de format
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(148,17): message : les espaces réservés et leurs paramètres attendent des arguments 2 variadiques, mais des arguments 1 ont été fournis
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(148,17): message : l'argument variadique manquant 2 est demandé par la chaîne de format '%c'
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(148,17): message : cet argument est utilisé comme taille de mémoire tampon
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(169,12): warning C4101: 'y' : variable locale non référencée
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(169,9): warning C4101: 'x' : variable locale non référencée
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(395,13): warning C4473: 'scanf_s' : nombre insuffisant d'arguments passés pour la chaîne de format
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(395,13): message : les espaces réservés et leurs paramètres attendent des arguments 2 variadiques, mais des arguments 1 ont été fournis
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(395,13): message : l'argument variadique manquant 2 est demandé par la chaîne de format '%[^\n]'
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(395,13): message : cet argument est utilisé comme taille de mémoire tampon
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(399,9): warning C4013: 'strlen' non défini(e) ; extern retournant int pris par défaut
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(429,13): warning C4473: 'scanf_s' : nombre insuffisant d'arguments passés pour la chaîne de format
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(429,13): message : les espaces réservés et leurs paramètres attendent des arguments 2 variadiques, mais des arguments 1 ont été fournis
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(429,13): message : l'argument variadique manquant 2 est demandé par la chaîne de format '%[^\n]'
-C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(429,13): message : cet argument est utilisé comme taille de mémoire tampon
+C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(35,11): warning C4013: 'time' non défini(e) ; extern retournant int pris par défaut
+C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(24,9): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(24,24): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(170,12): warning C4101: 'y' : variable locale non référencée
+C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(170,9): warning C4101: 'x' : variable locale non référencée
+C:\Users\ZBOOK\Documents\minesweeper-text\minesweeper-text.c(400,9): warning C4013: 'strlen' non défini(e) ; extern retournant int pris par défaut
   minesweeper-text.vcxproj -> C:\Users\ZBOOK\Documents\minesweeper-text\x64\Debug\minesweeper-text.exe

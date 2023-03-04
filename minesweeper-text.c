@@ -211,7 +211,8 @@ int main()
         }
         else
         {
-            printf("\nYOU WIN");
+            system("cls");
+            printf("\nYOU WIN\n\n");
             gameOver = FALSE;
             Display(length, height, grid);
         }

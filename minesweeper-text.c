@@ -69,33 +69,18 @@ int main()
             case 'e':
                 //int grid[80];
                 length = 10, height = 8, mines = 10, maxSpace = 1000;
-                grid = (int*)realloc(grid, sizeof(int) * length * height);
                 printf("\033[38;2;111;245;66m\n<*>~ EASY MODE SELECTED ~<*>\n\n\033[0m");
-                printf("\"LOADING\" FOR DRAMATIC EFFECT.\n"); Sleep(600);
-                printf("\"LOADING\" FOR DRAMATIC EFFECT..\n"); Sleep(600);
-                printf("\"LOADING\" FOR DRAMATIC EFFECT...\n"); Sleep(600);
-                FillGrid(length, height, mines, grid);
                 break;
 
             case 'm':
                 //int grid[80];
                 length = 18, height = 14, mines = 40, maxSpace = 1000;
-                grid = (int*)realloc(grid, sizeof(int) * length * height);
                 printf("\033[38;2;111;245;66m\n<*>~ MEDIUM MODE SELECTED ~<*>\n\n\033[0m");
-                printf("\"LOADING\" FOR DRAMATIC EFFECT.\n"); Sleep(600);
-                printf("\"LOADING\" FOR DRAMATIC EFFECT..\n"); Sleep(600);
-                printf("\"LOADING\" FOR DRAMATIC EFFECT...\n"); Sleep(600);
-                FillGrid(length, height, mines, grid);
                 break;
 
             case 'h':
                 length = 24, height = 20, mines = 99, maxSpace = 1000;
-                grid = (int*)realloc(grid, sizeof(int) * length * height);
                 printf("\033[38;2;111;245;66m\n<*>~ HARD MODE SELECTED ~<*>\n\n\033[0m");
-                printf("\"LOADING\" FOR DRAMATIC EFFECT.\n"); Sleep(600);
-                printf("\"LOADING\" FOR DRAMATIC EFFECT..\n"); Sleep(600);
-                printf("\"LOADING\" FOR DRAMATIC EFFECT...\n"); Sleep(600);
-                FillGrid(length, height, mines, grid);
                 break;
 
             case 'c':
@@ -121,26 +106,22 @@ int main()
                 {
                     printf("%s", gErrorMsg);
                     strcpy_s(gErrorMsg, sizeof(char) * 100, "");
-                    printf("\nEnter an amount of mines (0 ~ %d)  ", length * height);
-                    mines = AskInt(0, length * height);
+                    printf("\nEnter an amount of mines (1 ~ %d)  ", length * height-1);
+                    mines = AskInt(1, length * height-1);
                 } while (mines < 0);
 
                 printf("\033[38;2;111;245;66m\n<!>~ GRID SETUP SUCCESSFULL ~<!>\n\n\033[0m");
-                printf("\"LOADING\" FOR DRAMATIC EFFECT.\n"); Sleep(600);
-                printf("\"LOADING\" FOR DRAMATIC EFFECT..\n"); Sleep(600);
-                printf("\"LOADING\" FOR DRAMATIC EFFECT...\n"); Sleep(600);
-
-                grid = (int*) realloc(grid, sizeof(int) * length * height);
-                FillGrid(length, height, mines, grid);
                 break;
 
                 case 'r':
                     length = 50, height = 25, mines = length * height - 1, maxSpace = 1000;
-                    grid = (int*) realloc(grid, sizeof(int) * length * height);
-                    printf("\033[38;2;156;22;22m\n\n<*>~ GOOD LUCK >:) ~<*>\n\033[0m"); Sleep(1500);
-                    FillGrid(length, height, mines, grid);
+                    printf("\033[38;2;111;245;66m\n<*>~ EASTER EGG FOUND. RUSSIAN ROULETTE PLAYING. ~<*>\n\n\033[0m");
                     break;
             }
+
+            grid = (int*)realloc(grid, sizeof(int) * length * height);
+            for (int i = 0; i < 3; i++) { printf("\"LOADING\" FOR DRAMATIC EFFECT.\n"); Sleep(600); }
+            FillGrid(length, height, mines, grid);
 
             // Updates menuLoop "boolean"
             for (int x = 0; x < strlen(menuValidChars); x++)
@@ -211,7 +192,7 @@ int main()
         }
         else
         {
-            printf("\nYOU WIN");
+            printf("\nYOU WIN\n\n");
             gameOver = FALSE;
             Display(length, height, grid);
         }

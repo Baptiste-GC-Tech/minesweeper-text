@@ -223,7 +223,7 @@ int main()
             printf("\n\nEnter 0 to get back to Main Menu, and 1 to close   ");
             endProgram = AskInt(0, 1);
         } while (endProgram < 0);
-        
+
     } while( !endProgram );
 
     free(grid);
@@ -287,11 +287,11 @@ void FillGrid(int length, int height, int mines, int* grid)
             minePlaced++;
         }
     }
-    
+
     /*
     // Remove commentary to fill first 10 cells of a board with everything a cell can display. In order : Neighbor indicator from 1 to 8, Flag, Empty, Bomb, Detonated Bomb
     // The rest of the cells are Hidden
-    
+
     grid[0] = 1;
     grid[1] = 2;
     grid[2] = 3;
@@ -553,13 +553,21 @@ int TurnManager(int length, int height, int* grid, char action, int targetAbs, i
             }
             return -1;
         }
-        
+
         // Discover the cell and it's "safe" neighborhood (meaning the neighbors don't have mined cell around them)
         else
         {
             Dig(length, height, grid, targetAbs, targetOrd);
         }
 
+        // Checks if the player lost by digging a number cell with missplaced flag
+        for (int i = 0; i < length * height; i++)
+        {
+            if( grid[i] == 22)
+            {
+                return -1;
+            }
+        }
         // Checks if the player has won. If he didn't, return 0. This check is avoided if no cell was dug, or if he lost already
         for (int i = 0; i < length * height; i++)
         {
@@ -581,8 +589,14 @@ void Dig(int length, int height, int* grid, int targetAbs, int targetOrd)
 
     unsafeNeighborsCount = MineCounter(length, height, grid, targetAbs, targetOrd);
 
+    // Reveals a mine if called from a number
+    if (grid[coord] == 31)
+    {
+        grid[coord] = 22;
+    }
+
     // Reveals only the targeted cell if it has unsafe neighborhood
-    if (unsafeNeighborsCount != 0)
+    else if (unsafeNeighborsCount != 0)
     {
         grid[coord] = unsafeNeighborsCount;
     }
@@ -618,7 +632,7 @@ int AskInt(int lowLimit, int highLimit)
     int nbDigit = 1;
 
     scanf_s(" %[^\n]s", &query,50);
-    
+
 
     // Determining the maximum amount of digits to write highLimit
     for (int var = 10; highLimit % var != highLimit; var *= 10)
@@ -682,7 +696,7 @@ char AskChar(char* validChars, int size)
 }
 
 
-/*15122
+/*
 bomb = 0 / 1
 flag/show/hidden = 1 / 2 / 3
 state bomb
